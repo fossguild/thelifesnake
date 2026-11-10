@@ -1,12 +1,16 @@
 Copyright 2023 Monaco F. J. <monaco@usp.br>
+Copyright 2026 TheLifeSnake authors (AUTHORS)
 
-KobraPy is free software distributed under the terms of the GNU General
+TheLifeSnake is free software distributed under the terms of the GNU General
 Public License, version 3 or later.
 
-KobraPy — Programming Exercise
-==============================
+TheLifeSnake — Programming Exercise
+===================================
 
-KobraPy is a programming exercise inspired by the classic snake game of the
+KobraPy is a programming exercise based on KobraPy
+https://github.com/monacofj/kobrapy
+
+The software is inspired by the classic snake game of the
 1980s. Written in Python, it offers a small, functional codebase that students
 can explore, modify, and extend.
 
