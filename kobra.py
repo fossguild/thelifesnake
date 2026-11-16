@@ -232,6 +232,18 @@ while True:
             elif event.key == pygame.K_LEFT:
                 snake.ymov = 0
                 snake.xmov = -1
+            elif event.key == pygame.K_s:
+                snake.ymov = 1
+                snake.xmov = 0
+            elif event.key == pygame.K_w:
+                snake.ymov = -1
+                snake.xmov = 0
+            elif event.key == pygame.K_d:
+                snake.ymov = 0
+                snake.xmov = 1
+            elif event.key == pygame.K_a:
+                snake.ymov = 0
+                snake.xmov = -1
             elif event.key == pygame.K_q:
                 pygame.quit()
                 sys.exit()
