@@ -130,14 +130,6 @@ class Snake:
         """Check collisions, restart if needed, and move the snake."""
         global apple
 
-        # A move can take the head beyond the window. Check its current
-        # position before performing the next move.
-        if (
-            self.head.x not in range(0, WIDTH)
-            or self.head.y not in range(0, HEIGHT)
-        ):
-            self.alive = False
-
         # Every tail segment occupies one cell. If the head shares that
         # cell, the snake has bitten itself.
         for square in self.tail:
@@ -175,9 +167,10 @@ class Snake:
             else:
                 self.tail.pop()
 
-            # Multiplying by GRID_SIZE moves exactly one whole grid cell.
-            self.head.x += self.xmov * GRID_SIZE
-            self.head.y += self.ymov * GRID_SIZE
+            # Move one grid cell and wrap around to the opposite edge
+            # when the head crosses an arena boundary.
+            self.head.x = (self.head.x + self.xmov * GRID_SIZE) % WIDTH
+            self.head.y = (self.head.y + self.ymov * GRID_SIZE) % HEIGHT
 
 
 class Apple:
