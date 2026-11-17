@@ -147,12 +147,11 @@ class Snake:
         """Check collisions, restart if needed, and move the snake."""
         global apple
 
-        # A move can take the head beyond the window. Check its current
-        # position before performing the next move.
-        if (
-            self.head.x not in range(0, WIDTH)
-            or self.head.y not in range(0, HEIGHT)
-        ):
+        # The head must not leave the arena. Check where the next move
+        # would take it, so the snake dies at the wall, still visible.
+        next_x = self.head.x + self.xmov * GRID_SIZE
+        next_y = self.head.y + self.ymov * GRID_SIZE
+        if next_x not in range(0, WIDTH) or next_y not in range(0, HEIGHT):
             self.alive = False
 
         # Every tail segment occupies one cell. If the head shares that
