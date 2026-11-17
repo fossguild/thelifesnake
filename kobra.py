@@ -141,23 +141,31 @@ class Snake:
 
         # A move can take the head beyond the window. Check its current
         # position before performing the next move.
+        death_cause = None
         if (
             self.head.x not in range(0, WIDTH)
             or self.head.y not in range(0, HEIGHT)
         ):
             self.alive = False
+            death_cause = "wall"
 
         # Every tail segment occupies one cell. If the head shares that
         # cell, the snake has bitten itself.
-        for square in self.tail:
-            if self.head.x == square.x and self.head.y == square.y:
-                self.alive = False
+        if self.alive:
+            for square in self.tail:
+                if self.head.x == square.x and self.head.y == square.y:
+                    self.alive = False
+                    death_cause = "self"
+                    break
 
         # Starting over here keeps the same Snake object in use. A new
         # apple is also created so that a restarted game has fresh food.
         if not self.alive:
             pygame.draw.rect(arena, DEAD_HEAD_COLOR, snake.head)
-            center_prompt("Game Over", "Press to restart")
+            if death_cause == "wall":
+                center_prompt("Game Over", "Hit the wall. Press to restart")
+            else:
+                center_prompt("Game Over", "Bit yourself. Press to restart")
 
             # Choose a new random position and direction.
             self.x = random.randrange(2 * GRID_SIZE, WIDTH - 2 * GRID_SIZE, GRID_SIZE)
