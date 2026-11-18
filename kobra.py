@@ -104,7 +104,6 @@ def draw_grid():
             rect = pygame.Rect(x, y, GRID_SIZE, GRID_SIZE)
             pygame.draw.rect(arena, GRID_COLOR, rect, 1)
 
-
 # Game objects.
 # A snake is made of a head and a list of tail segments.
 class Snake:
@@ -127,44 +126,28 @@ class Snake:
         self.got_apple = False
 
     def update(self):
-        """Check collisions, restart if needed, and move the snake."""
-        global apple
+        """Check collisions and move the snake."""
+        # Calculate the next position before moving.
+        next_x = self.head.x + self.xmov * GRID_SIZE
+        next_y = self.head.y + self.ymov * GRID_SIZE
 
-        # A move can take the head beyond the window. Check its current
-        # position before performing the next move.
+        # Check whether the entire head would cross an arena boundary.
         if (
-            self.head.x not in range(0, WIDTH)
-            or self.head.y not in range(0, HEIGHT)
+            next_x < 0
+            or next_x + GRID_SIZE > WIDTH
+            or next_y < 0
+            or next_y + GRID_SIZE > HEIGHT
         ):
             self.alive = False
+            return
 
-        # Every tail segment occupies one cell. If the head shares that
-        # cell, the snake has bitten itself.
+        # Check collision with the snake's own tail.
         for square in self.tail:
             if self.head.x == square.x and self.head.y == square.y:
                 self.alive = False
+                return
 
-        # Starting over here keeps the same Snake object in use. A new
-        # apple is also created so that a restarted game has fresh food.
-        if not self.alive:
-            pygame.draw.rect(arena, DEAD_HEAD_COLOR, snake.head)
-            center_prompt("Game Over", "Press to restart")
-
-            # Restore the starting position and direction.
-            self.x, self.y = GRID_SIZE, GRID_SIZE
-            self.head = pygame.Rect(self.x, self.y, GRID_SIZE, GRID_SIZE)
-            self.tail = []
-            self.xmov = 1
-            self.ymov = 0
-            self.alive = True
-            self.got_apple = False
-
-            apple = Apple()
-
-        # To make the tail follow, remember where the head was before
-        # moving it. Normally the last tail segment is then removed, so
-        # the snake's length stays the same. After eating an apple, keep
-        # that segment for one turn instead: this makes the snake grow.
+        # Move the tail and grow when an apple was collected.
         if self.xmov or self.ymov:
             self.tail.insert(
                 0, pygame.Rect(self.head.x, self.head.y, GRID_SIZE, GRID_SIZE)
@@ -175,9 +158,9 @@ class Snake:
             else:
                 self.tail.pop()
 
-            # Multiplying by GRID_SIZE moves exactly one whole grid cell.
-            self.head.x += self.xmov * GRID_SIZE
-            self.head.y += self.ymov * GRID_SIZE
+            # Apply the validated position.
+            self.head.x = next_x
+            self.head.y = next_y
 
 
 class Apple:
@@ -211,8 +194,8 @@ center_prompt(WINDOW_TITLE, "Press to start")
 
 # Main game loop.
 # Each iteration reads input, advances the game (unless paused), draws
-# the screen, and limits the pace. Keeping these steps visible makes it
-# easier to understand how keyboard actions affect what appears on screen.
+# the screen, and limits the pace. Keeping these steps visible makes
+# it easier to understand how keyboard actions affect what appears on screen.
 
 while True:
     # Handle input and window events first, so keys can affect this turn.
@@ -245,17 +228,23 @@ while True:
 
     # While paused, do not advance the snake or redraw the arena.
     # The existing objects are still displayed below.
-    if game_on:
+    if game_on and snake.alive:
         snake.update()
-        arena.fill(ARENA_COLOR)
-        draw_grid()
+
+    arena.fill(ARENA_COLOR)
+    draw_grid()
+
+    if snake.alive:
         apple.update()
 
     # Draw tail segments first and the head last, so the head is visible.
     for square in snake.tail:
         pygame.draw.rect(arena, TAIL_COLOR, square)
 
-    pygame.draw.rect(arena, HEAD_COLOR, snake.head)
+    if snake.alive:
+        pygame.draw.rect(arena, HEAD_COLOR, snake.head)
+    else:
+        pygame.draw.rect(arena, DEAD_HEAD_COLOR, snake.head)
 
     # The tail length represents the number of apples collected.
     score = BIG_FONT.render(f"{len(snake.tail)}", True, SCORE_COLOR)
@@ -263,7 +252,7 @@ while True:
 
     # Collecting an apple schedules growth on the next snake update.
     # A new apple then appears for the player to collect.
-    if snake.head.x == apple.x and snake.head.y == apple.y:
+    if snake.alive and snake.head.x == apple.x and snake.head.y == apple.y:
         snake.got_apple = True
         apple = Apple()
 
@@ -271,3 +260,9 @@ while True:
     # currently controls both drawing and movement.
     pygame.display.update()
     clock.tick(GAME_SPEED)
+
+    # Wait for the player to restart after Game Over.
+    if not snake.alive:
+        center_prompt("Game Over", "Press to restart")
+        snake = Snake()
+        apple = Apple()
