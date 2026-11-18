@@ -23,6 +23,7 @@ from pathlib import Path
 
 import pygame
 
+
 # Game settings.
 # Change these values to customize the game without changing its rules.
 
@@ -167,13 +168,14 @@ class Snake:
         ):
             self.alive = False
             cause_of_death = "Hit a wall"
-
-        # Every tail segment occupies one cell. If the head shares that
-        # cell, the snake has bitten itself.
-        for square in self.tail:
-            if self.head.x == square.x and self.head.y == square.y:
-                self.alive = False
-                cause_of_death = "Hit yourself"
+        else:
+            # Every tail segment occupies one cell. If the head shares that
+            # cell, the snake has bitten itself.
+            for square in self.tail:
+                 if self.head.x == square.x and self.head.y == square.y:
+                     self.alive = False
+                     cause_of_death = "Hit yourself"
+                     break
 
         # Starting over here keeps the same Snake object in use. A new
         # apple is also created so that a restarted game has fresh food.
@@ -223,8 +225,7 @@ class Apple:
         # Choose from valid grid cells not occupied by the snake.
         occupied_cells = {(snake.head.x, snake.head.y)}
         occupied_cells.update(
-                (segment.x, segment.y,)
-                for segment in snake.tail
+            (segment.x, segment.y) for segment in snake.tail
         )
         available_cells = [
             (x, y)
