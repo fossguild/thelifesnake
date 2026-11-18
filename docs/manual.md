@@ -45,8 +45,10 @@ Guide a snake through a rectangular arena, collecting apples that appear at
 random unoccupied grid positions within the arena. Each apple increases your
 score and makes the snake grow longer.
 
-But beware! The arena borders are electrified, and the snake is poisonous to
-itself. Hitting a wall or biting its own tail ends the game.
+Crossing an arena border makes the snake reappear at the opposite edge:
+left connects to right, and top connects to bottom. Its direction stays the
+same, and its tail follows through the border. Biting its own tail still
+ends the game.
 
 The goal is simple: eat as many apples as you can.
 
