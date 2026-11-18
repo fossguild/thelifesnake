@@ -66,17 +66,36 @@ game_on = 1
 
 # Helper functions.
 # These functions draw reusable parts of the screen.
-def center_prompt(title, subtitle):
+def center_prompt(title, subtitle, message=None):
     """Display a prompt and wait for a key or quit event."""
+
+    center_title_width = WIDTH / 2
+    center_title_height = HEIGHT / 2
+    center_subtitle_width = WIDTH / 2
+    center_subtitle_height = HEIGHT * 2 / 3
+
+    if message is not None:
+        center_message_width = WIDTH / 2
+        center_message_height = HEIGHT * 3 / 5
+        center_title_height = HEIGHT * 2 / 5
+        center_subtitle_height = HEIGHT * 4 / 5
+
+        center_message = SMALL_FONT.render(message, True, MESSAGE_COLOR)
+        center_message_rect = center_message.get_rect(
+            center=(center_message_width, center_message_height)
+        )
+        arena.blit(center_message, center_message_rect)
+
+
     center_title = BIG_FONT.render(title, True, MESSAGE_COLOR)
     center_title_rect = center_title.get_rect(
-        center=(WIDTH / 2, HEIGHT / 2)
+        center=(center_title_width, center_title_height)
     )
     arena.blit(center_title, center_title_rect)
 
     center_subtitle = SMALL_FONT.render(subtitle, True, MESSAGE_COLOR)
     center_subtitle_rect = center_subtitle.get_rect(
-        center=(WIDTH / 2, HEIGHT * 2 / 3)
+        center=(center_subtitle_width, center_subtitle_height)
     )
     arena.blit(center_subtitle, center_subtitle_rect)
 
@@ -139,25 +158,35 @@ class Snake:
         """Check collisions, restart if needed, and move the snake."""
         global apple
 
+        cause_of_death = None
+
         # A move can take the head beyond the window. Check its current
         # position before performing the next move.
         if (
-            self.head.x not in range(0, WIDTH)
-            or self.head.y not in range(0, HEIGHT)
+            self.head.x not in range(WIDTH)
+            or self.head.y not in range(HEIGHT)
         ):
             self.alive = False
-
-        # Every tail segment occupies one cell. If the head shares that
-        # cell, the snake has bitten itself.
-        for square in self.tail:
-            if self.head.x == square.x and self.head.y == square.y:
-                self.alive = False
+            cause_of_death = "Hit a wall"
+        else:
+            # Every tail segment occupies one cell. If the head shares that
+            # cell, the snake has bitten itself.
+            for square in self.tail:
+                if self.head.x == square.x and self.head.y == square.y:
+                    self.alive = False
+                    cause_of_death = "Hit yourself"
+                    break
 
         # Starting over here keeps the same Snake object in use. A new
         # apple is also created so that a restarted game has fresh food.
         if not self.alive:
             pygame.draw.rect(arena, DEAD_HEAD_COLOR, snake.head)
-            center_prompt("Game Over", "Press to restart")
+
+            center_prompt(
+                "Game Over",
+                "Press to restart",
+                f"Cause of death: {cause_of_death}"
+            )
 
             # Choose a new random position and direction.
             self.x = random.randrange(2 * GRID_SIZE, WIDTH - 2 * GRID_SIZE, GRID_SIZE)
