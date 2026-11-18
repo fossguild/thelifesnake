@@ -252,16 +252,16 @@ while True:
             # Ignore movement keys while paused.
             elif not game_on:
                 continue
-            elif event.key == pygame.K_DOWN:
+            elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
                 snake.ymov = 1
                 snake.xmov = 0
-            elif event.key == pygame.K_UP:
+            elif event.key == pygame.K_UP or event.key == pygame.K_w:
                 snake.ymov = -1
                 snake.xmov = 0
-            elif event.key == pygame.K_RIGHT:
+            elif event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                 snake.ymov = 0
                 snake.xmov = 1
-            elif event.key == pygame.K_LEFT:
+            elif event.key == pygame.K_LEFT or event.key == pygame.K_a:
                 snake.ymov = 0
                 snake.xmov = -1
 
