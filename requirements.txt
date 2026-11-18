@@ -1,0 +1,2 @@
+# Pygame 2.0.0 cannot load the bundled font from a pathlib.Path.
+pygame>=2.0.1

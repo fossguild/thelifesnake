@@ -9,6 +9,9 @@ Requirements
 - Python 3
 - Pygame (https://www.pygame.org)
 
+The Python packages the game depends on, with their supported versions,
+are recorded in [`requirements.txt`](../requirements.txt).
+
 Setup and Running
 -----------------
 
@@ -21,7 +24,7 @@ On Linux/macOS:
 ```sh
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install pygame
+python -m pip install -r requirements.txt
 python kobra.py
 ```
 
@@ -30,7 +33,7 @@ On Windows (PowerShell):
 ```powershell
 python -m venv .venv
 .venv\\Scripts\\Activate.ps1
-python -m pip install pygame
+python -m pip install -r requirements.txt
 python kobra.py
 ```
 
