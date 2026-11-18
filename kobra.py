@@ -172,10 +172,10 @@ class Snake:
             # Every tail segment occupies one cell. If the head shares that
             # cell, the snake has bitten itself.
             for square in self.tail:
-                 if self.head.x == square.x and self.head.y == square.y:
-                     self.alive = False
-                     cause_of_death = "Hit yourself"
-                     break
+                if self.head.x == square.x and self.head.y == square.y:
+                    self.alive = False
+                    cause_of_death = "Hit yourself"
+                    break
 
         # Starting over here keeps the same Snake object in use. A new
         # apple is also created so that a restarted game has fresh food.
