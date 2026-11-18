@@ -55,10 +55,10 @@ Controls
 
 - **Arrow keys:** Steer the snake.
 - **P:** Pause or resume the game.
-- **Q:** Quit the game.
+- **Q or Escape:** Quit the game.
 
-Press any key to start. After a game over, press any key to play again, or
-`Q` to quit.
+At the start and Game Over screens, press any key other than Q or Escape
+to begin a new game.
 
 Programming Exercise
 --------------------
