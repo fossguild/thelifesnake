@@ -210,7 +210,7 @@ class Apple:
             x, y = random.choice(available_cells)
             self.rect = pygame.Rect(x, y, GRID_SIZE, GRID_SIZE)
 
-    def update(self):
+    def draw(self):
         """Draw the apple."""
         if self.rect is not None:
             pygame.draw.rect(arena, APPLE_COLOR, self.rect)
@@ -271,7 +271,7 @@ while True:
         snake.update()
         arena.fill(ARENA_COLOR)
         draw_grid()
-        apple.update()
+        apple.draw()
 
     # Draw tail segments first and the head last, so the head is visible.
     for square in snake.tail:
