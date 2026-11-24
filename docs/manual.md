@@ -53,7 +53,7 @@ The goal is simple: eat as many apples as you can.
 Controls
 --------
 
-- **Arrow keys:** Steer the snake.
+- **Arrow keys or WASD:** Steer the snake.
 - **P:** Pause or resume the game.
 - **Q or Escape:** Quit the game.
 

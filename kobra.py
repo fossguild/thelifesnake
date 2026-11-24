@@ -139,12 +139,11 @@ class Snake:
         """Check collisions, restart if needed, and move the snake."""
         global apple
 
-        # A move can take the head beyond the window. Check its current
-        # position before performing the next move.
-        if (
-            self.head.x not in range(0, WIDTH)
-            or self.head.y not in range(0, HEIGHT)
-        ):
+        # The head must not leave the arena. Check where the next move
+        # would take it, so the snake dies at the wall, still visible.
+        next_x = self.head.x + self.xmov * GRID_SIZE
+        next_y = self.head.y + self.ymov * GRID_SIZE
+        if next_x not in range(0, WIDTH) or next_y not in range(0, HEIGHT):
             self.alive = False
 
         # Every tail segment occupies one cell. If the head shares that
@@ -252,16 +251,16 @@ while True:
             # Ignore movement keys while paused.
             elif not game_on:
                 continue
-            elif event.key == pygame.K_DOWN:
+            elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
                 snake.ymov = 1
                 snake.xmov = 0
-            elif event.key == pygame.K_UP:
+            elif event.key == pygame.K_UP or event.key == pygame.K_w:
                 snake.ymov = -1
                 snake.xmov = 0
-            elif event.key == pygame.K_RIGHT:
+            elif event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                 snake.ymov = 0
                 snake.xmov = 1
-            elif event.key == pygame.K_LEFT:
+            elif event.key == pygame.K_LEFT or event.key == pygame.K_a:
                 snake.ymov = 0
                 snake.xmov = -1
 
