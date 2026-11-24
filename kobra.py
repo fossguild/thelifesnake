@@ -61,7 +61,7 @@ SMALL_FONT = pygame.font.Font(FONT_PATH, int(WIDTH / 20))
 
 pygame.display.set_caption(WINDOW_TITLE)
 
-game_on = 1
+game_on = True
 
 
 # Helper functions.
