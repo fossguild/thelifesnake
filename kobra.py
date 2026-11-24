@@ -54,7 +54,12 @@ arena = pygame.display.set_mode((WIDTH, HEIGHT))
 # Resolve assets relative to this file, so the game can be started from
 # any working directory.
 ASSETS_DIR = Path(__file__).resolve().parent / "assets"
+AUDIO_DIR = ASSETS_DIR / "audio"
 FONT_PATH = ASSETS_DIR / "font" / "GetVoIP-Grotesque.ttf"
+CARTOON_BITE_1_PATH = AUDIO_DIR / "cartoon_bite_1.mp3"
+CARTOON_BITE_2_PATH = AUDIO_DIR / "cartoon_bite_2.mp3"
+CARTOON_BITE_3_PATH = AUDIO_DIR / "cartoon_bite_3.mp3"
+CARTOON_BITE_4_PATH = AUDIO_DIR / "cartoon_bite_4.mp3"
 
 BIG_FONT = pygame.font.Font(FONT_PATH, int(WIDTH / 8))
 SMALL_FONT = pygame.font.Font(FONT_PATH, int(WIDTH / 20))
@@ -62,6 +67,7 @@ SMALL_FONT = pygame.font.Font(FONT_PATH, int(WIDTH / 20))
 pygame.display.set_caption(WINDOW_TITLE)
 
 game_on = 1
+curr_bite_sound = 0
 
 
 # Helper functions.
@@ -104,6 +110,16 @@ def draw_grid():
             rect = pygame.Rect(x, y, GRID_SIZE, GRID_SIZE)
             pygame.draw.rect(arena, GRID_COLOR, rect, 1)
 
+
+def play_sound():
+    global curr_bite_sound
+
+    pygame.mixer.music.unload()
+    sound_paths = [CARTOON_BITE_1_PATH, CARTOON_BITE_2_PATH, CARTOON_BITE_3_PATH, CARTOON_BITE_4_PATH]
+    chosen_sound_path = sound_paths[curr_bite_sound]
+    curr_bite_sound = (curr_bite_sound + 1) % len(sound_paths)
+    pygame.mixer.music.load(chosen_sound_path)
+    pygame.mixer.music.play()
 
 # Game objects.
 # A snake is made of a head and a list of tail segments.
@@ -284,8 +300,10 @@ while True:
 
     # Collecting an apple schedules growth on the next snake update.
     # A new apple then appears for the player to collect.
+    # A sound is played as well
     if apple.rect is not None and snake.head.colliderect(apple.rect):
         snake.got_apple = True
+        play_sound()
         apple = Apple(snake)
 
     # Show this frame and limit how often the loop runs. GAME_SPEED
