@@ -246,7 +246,7 @@ while True:
             if event.key in (pygame.K_q, pygame.K_ESCAPE):
                 pygame.quit()
                 sys.exit()
-            elif event.key == pygame.K_p:
+            elif event.key in (pygame.K_p, pygame.K_SPACE):
                 game_on = not game_on
             # Ignore movement keys while paused.
             elif not game_on:
