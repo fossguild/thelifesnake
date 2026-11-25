@@ -56,8 +56,13 @@ arena = pygame.display.set_mode((WIDTH, HEIGHT))
 ASSETS_DIR = Path(__file__).resolve().parent / "assets"
 FONT_PATH = ASSETS_DIR / "font" / "GetVoIP-Grotesque.ttf"
 
-BIG_FONT = pygame.font.Font(FONT_PATH, int(WIDTH / 8))
-SMALL_FONT = pygame.font.Font(FONT_PATH, int(WIDTH / 20))
+# Use Pygame's default font if the bundled font is missing.
+try:
+    BIG_FONT = pygame.font.Font(FONT_PATH, int(WIDTH / 8))
+    SMALL_FONT = pygame.font.Font(FONT_PATH, int(WIDTH / 20))
+except FileNotFoundError:
+    BIG_FONT = pygame.font.Font(None, int(WIDTH / 8))
+    SMALL_FONT = pygame.font.Font(None, int(WIDTH / 20))
 
 pygame.display.set_caption(WINDOW_TITLE)
 
