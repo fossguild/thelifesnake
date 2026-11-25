@@ -7,7 +7,14 @@ Requirements
 ------------
 
 - Python 3
-- Pygame (https://www.pygame.org)
+- pygame-ce, the Pygame Community Edition (https://pyga.me)
+
+The Python packages the game depends on are recorded in
+[`requirements.txt`](../requirements.txt).
+
+pygame-ce replaces the original `pygame` package and cannot be installed
+alongside it. If `pygame` is already installed in your environment, run
+`python -m pip uninstall pygame` before installing the requirements.
 
 Setup and Running
 -----------------
@@ -21,7 +28,7 @@ On Linux/macOS:
 ```sh
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install pygame
+python -m pip install -r requirements.txt
 python kobra.py
 ```
 
@@ -30,7 +37,7 @@ On Windows (PowerShell):
 ```powershell
 python -m venv .venv
 .venv\\Scripts\\Activate.ps1
-python -m pip install pygame
+python -m pip install -r requirements.txt
 python kobra.py
 ```
 
