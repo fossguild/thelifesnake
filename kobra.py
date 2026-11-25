@@ -27,8 +27,9 @@ import pygame
 # Game settings.
 # Change these values to customize the game without changing its rules.
 
-WIDTH, HEIGHT = 800, 800  # Game screen dimensions.
-GRID_SIZE = 50  # Side length of each grid cell.
+CELLS = 16  # Number of grid cells per side of the arena.
+MAX_GRID_SIZE = 50  # Largest side length of each grid cell.
+SCREEN_FRACTION = 0.8  # Fraction of the screen the window may occupy.
 
 HEAD_COLOR = "#00aa00"
 DEAD_HEAD_COLOR = "#4b0082"
@@ -47,6 +48,16 @@ GAME_SPEED = 7  # Game-loop iterations per second.
 # The window and fonts are used later to draw the game and its messages.
 
 pygame.init()
+
+# Fit the arena on the screen. The number of cells stays fixed, so the
+# grid density is the same on every display; only the cell size changes.
+# The window is never larger than CELLS * MAX_GRID_SIZE (800x800 by
+# default). SCREEN_FRACTION leaves room for the title bar and taskbar.
+screen_info = pygame.display.Info()
+max_side = int(min(screen_info.current_w, screen_info.current_h) * SCREEN_FRACTION)
+
+GRID_SIZE = max(1, min(MAX_GRID_SIZE, max_side // CELLS))
+WIDTH = HEIGHT = CELLS * GRID_SIZE  # Game screen dimensions.
 
 clock = pygame.time.Clock()
 arena = pygame.display.set_mode((WIDTH, HEIGHT))
