@@ -230,12 +230,23 @@ score_rect = BIG_FONT.render("1", True, MESSAGE_COLOR).get_rect(
     center=(WIDTH / 2, HEIGHT / 20 + HEIGHT / 30)
 )
 
-draw_grid()
 
-snake = Snake()
-apple = Apple(snake)
+def start_game():
+    global game_on
 
-center_prompt(WINDOW_TITLE, "Press to start")
+    # Necessary for the game restart during a pause
+    game_on = True
+    arena.fill(ARENA_COLOR)
+    draw_grid()
+
+    snake = Snake()
+    apple = Apple(snake)
+
+    center_prompt(WINDOW_TITLE, "Press to start")
+
+    return snake, apple
+
+snake, apple = start_game()
 
 
 # Main game loop.
@@ -256,6 +267,8 @@ while True:
                 sys.exit()
             elif event.key == pygame.K_p:
                 game_on = not game_on
+            elif event.key == pygame.K_r:
+                snake, apple = start_game()
             # Ignore movement keys while paused.
             elif not game_on:
                 continue

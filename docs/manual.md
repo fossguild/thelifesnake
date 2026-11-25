@@ -55,6 +55,7 @@ Controls
 
 - **Arrow keys or WASD:** Steer the snake.
 - **P:** Pause or resume the game.
+- **R:** Restart the game.
 - **Q or Escape:** Quit the game.
 
 At the start and Game Over screens, press any key other than Q or Escape
