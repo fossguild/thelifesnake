@@ -152,6 +152,14 @@ class Snake:
             if self.head.x == square.x and self.head.y == square.y:
                 self.alive = False
 
+        # Moving back onto the first tail segment is also a self-collision.
+        # Otherwise, a one-segment tail would just swap places with the head.
+        next_head = self.head.move(
+            self.xmov * GRID_SIZE, self.ymov * GRID_SIZE
+        )
+        if self.tail and next_head == self.tail[0]:
+            self.alive = False
+
         # Starting over here keeps the same Snake object in use. A new
         # apple is also created so that a restarted game has fresh food.
         if not self.alive:
