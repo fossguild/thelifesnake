@@ -48,7 +48,8 @@ score and makes the snake grow longer.
 But beware! The arena borders are electrified, and the snake is poisonous to
 itself. Hitting a wall or biting its own tail ends the game.
 
-The goal is simple: eat as many apples as you can.
+The goal is to fill the whole arena with the snake. When no free cell is
+left for a new apple, you win!
 
 Controls
 --------
