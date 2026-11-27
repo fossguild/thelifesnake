@@ -40,7 +40,10 @@ SCORE_COLOR = "#ffffff"
 MESSAGE_COLOR = "#808080"
 
 WINDOW_TITLE = "KobraPy"
-GAME_SPEED = 7  # Game-loop iterations per second.
+
+INITIAL_GAME_SPEED = 6  # Initial Game-loop iterations per second.
+STEP_GAME_SPEED = 0.1 # Step value for increase the Game-loop iterations per second
+LIMIT_GAME_SPEED = 15 # Limit value to Game-loop iterations per second
 
 
 # Set up Pygame.
@@ -63,7 +66,7 @@ pygame.display.set_caption(WINDOW_TITLE)
 
 game_on = 1
 show_grid = True
-
+current_game_speed = INITIAL_GAME_SPEED
 
 # Helper functions.
 # These functions draw reusable parts of the screen.
@@ -138,7 +141,7 @@ class Snake:
 
     def update(self):
         """Check collisions, restart if needed, and move the snake."""
-        global apple, show_grid
+        global apple, show_grid, current_game_speed
 
         # The head must not leave the arena. Check where the next move
         # would take it, so the snake dies at the wall, still visible.
@@ -159,6 +162,8 @@ class Snake:
             pygame.draw.rect(arena, DEAD_HEAD_COLOR, snake.head)
             center_prompt("Game Over", "Press to restart")
             show_grid = True
+
+            current_game_speed = INITIAL_GAME_SPEED 
 
             # Choose a new random position and direction.
             self.x = random.randrange(2 * GRID_SIZE, WIDTH - 2 * GRID_SIZE, GRID_SIZE)
@@ -181,6 +186,11 @@ class Snake:
             )
 
             if self.got_apple:
+
+
+                if current_game_speed < LIMIT_GAME_SPEED: 
+                    current_game_speed += STEP_GAME_SPEED
+
                 self.got_apple = False
             else:
                 self.tail.pop()
@@ -296,4 +306,4 @@ while True:
     # Show this frame and limit how often the loop runs. GAME_SPEED
     # currently controls both drawing and movement.
     pygame.display.update()
-    clock.tick(GAME_SPEED)
+    clock.tick(current_game_speed)
