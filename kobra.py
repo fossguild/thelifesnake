@@ -287,6 +287,10 @@ while True:
     if apple.rect is not None and snake.head.colliderect(apple.rect):
         snake.got_apple = True
         apple = Apple(snake)
+        if apple.rect is None:
+            center_prompt("You Win!", "Press to restart")
+            snake = Snake()
+            apple = Apple(snake)
 
     # Show this frame and limit how often the loop runs. GAME_SPEED
     # currently controls both drawing and movement.
