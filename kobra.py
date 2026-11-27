@@ -62,6 +62,7 @@ SMALL_FONT = pygame.font.Font(FONT_PATH, int(WIDTH / 20))
 pygame.display.set_caption(WINDOW_TITLE)
 
 game_on = 1
+show_grid = True
 
 
 # Helper functions.
@@ -137,7 +138,7 @@ class Snake:
 
     def update(self):
         """Check collisions, restart if needed, and move the snake."""
-        global apple
+        global apple, show_grid
 
         # The head must not leave the arena. Check where the next move
         # would take it, so the snake dies at the wall, still visible.
@@ -157,6 +158,7 @@ class Snake:
         if not self.alive:
             pygame.draw.rect(arena, DEAD_HEAD_COLOR, snake.head)
             center_prompt("Game Over", "Press to restart")
+            show_grid = True
 
             # Choose a new random position and direction.
             self.x = random.randrange(2 * GRID_SIZE, WIDTH - 2 * GRID_SIZE, GRID_SIZE)
@@ -251,6 +253,8 @@ while True:
             # Ignore movement keys while paused.
             elif not game_on:
                 continue
+            elif event.key == pygame.K_g:
+                show_grid = not show_grid
             elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
                 snake.ymov = 1
                 snake.xmov = 0
@@ -269,7 +273,8 @@ while True:
     if game_on:
         snake.update()
         arena.fill(ARENA_COLOR)
-        draw_grid()
+        if show_grid:
+            draw_grid()
         apple.update()
 
     # Draw tail segments first and the head last, so the head is visible.
